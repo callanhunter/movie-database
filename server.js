@@ -26,6 +26,24 @@ app.use((req, res) => {
   res.status(404).end();
 });
 
+// Create a movie
+app.post("/api/new-movie", ({ body }, res) => {
+  const sql = `INSERT INTO movies (movie_name)
+    VALUES (?)`;
+  const params = [body.movie_name];
+
+  db.query(sql, params, (err, result) => {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+    res.json({
+      message: "success",
+      data: body,
+    });
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
